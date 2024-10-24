@@ -28,10 +28,16 @@ class CategoriaController extends Controller
             'descricao' => 'required|max:255',
         ]);
 
-        //se n funcionar como voltar um erro - atv
-        Categoria::create($request->all());//passa todos os parametros para o banco
+        try {
+            Categoria::create($request->all());
+            return redirect()->route('categorias.index')->with('sucesso', 'Categoria cadastrada com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->route('categorias.index')->with('erro', 'Erro ao cadastrar a categoria: ' . $e->getMessage());
+        }        
 
-        return redirect()->route('categorias.index')->with('sucesso', 'Categoria cadastrada com sucesso!');
+        //se n funcionar como voltar um erro - atv
+        //Categoria::create($request->all());//passa todos os parametros para o banco
+        //return redirect()->route('categorias.index')->with('sucesso', 'Categoria cadastrada com sucesso!');
     }
 
     //
